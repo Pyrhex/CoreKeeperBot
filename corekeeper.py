@@ -38,12 +38,20 @@ def file_modified():
         except OSError:
             f.seek(0)
         last_line = f.readline().decode()
-        if "connection from" in last_line:
-            embed = discord.Embed(title=players[''.join([n for n in last_line if n.isdigit()])] + " has joined the game")
-            hook.send(embed=embed)
-        if "Disconnected" in last_line:
-            embed = discord.Embed(title=players[''.join([n for n in last_line if n.isdigit()])] + " has left the game")
-            hook.send(embed=embed)
+        try:
+            if "connection from" in last_line:
+                embed = discord.Embed(title=players[''.join([n for n in last_line if n.isdigit()])] + " has joined the game")
+                hook.send(embed=embed)
+            if "Disconnected" in last_line:
+                embed = discord.Embed(title=players[''.join([n for n in last_line if n.isdigit()])] + " has left the game")
+                hook.send(embed=embed)
+        except:
+            if "connection from" in last_line:
+                embed = discord.Embed(title=''.join([n for n in last_line if n.isdigit()]) + " has joined the game")
+                hook.send(embed=embed)
+            if "Disconnected" in last_line:
+                embed = discord.Embed(title=''.join([n for n in last_line if n.isdigit()]) + " has left the game")
+                hook.send(embed=embed)
     return False
 
     
