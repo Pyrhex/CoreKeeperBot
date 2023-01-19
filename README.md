@@ -13,7 +13,13 @@ This will install all the packages listed in the requirements.txt file to your P
 
 # Installation
 1. Clone the repository into the same directory that the CoreKeeperLog.txt file is located
-2. Run the program using Python:
+2. Create an .env file
+3. Insert your Steam API Key and Discord webhook URL using the following format:
+``` 
+WEBHOOK_URL="INSERT DISCORD WEBHOOK HERE"
+STEAM_API_KEY="INSERT STEAM API KEY HERE"
+```
+4. Run the program using Python:
 ```
 py corekeeper.py
 ```
