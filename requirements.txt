@@ -1,3 +1,4 @@
-python-dotenv==0.21.0
+python-dotenv==1.0.0
 python_steam_api==1.0.7
+requests==2.28.1
 steam==1.4.4
