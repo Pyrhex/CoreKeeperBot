@@ -3,6 +3,7 @@ import time
 import traceback
 import discord
 import os
+import requests
 from dhooks import Webhook
 from steam import Steam
 from dotenv import load_dotenv
@@ -27,7 +28,22 @@ class FileModified():
                         break
         except Exception as e:
             print(traceback.format_exc())
-
+def sendWebhook(url, message, color):
+    data = {}
+    data["embeds"] = [
+        {
+            "title" : message,
+            "color" : color
+        }
+    ]
+    try:
+        result = requests.post(url, json = data)
+        result.raise_for_status()
+    except Exception as err:
+        print(f'Other error occurred: {err}')  # Python 3.6
+    else:
+        print('Success! Notification sent!')   
+        
 def getNameFromID(id):
     steam = Steam(STEAM_API_KEY)
     user = steam.users.get_user_details(id)
@@ -48,15 +64,12 @@ def file_modified():
         last_line = f.readline().decode()
         try:
             if "connection from" in last_line:
-                embed = discord.Embed(title=getNameFromID(''.join([n for n in last_line if n.isdigit()])) + " has joined the game", color=discord.Color.green())
-                hook.send(embed=embed)
+                sendWebhook(WEBHOOK_URL, getNameFromID(''.join([n for n in last_line if n.isdigit()])) + " has joined the game", "65280")
             if "Disconnected" in last_line:
-                embed = discord.Embed(title=getNameFromID(''.join([n for n in last_line if n.isdigit()])) + " has left the game", color=discord.Color.red())
-                hook.send(embed=embed)
+                sendWebhook(WEBHOOK_URL, getNameFromID(''.join([n for n in last_line if n.isdigit()])) + " has left the game", "16711680")
         except Exception as e:
             print(e)
     return False
 
-    
 fileModifiedHandler = FileModified(r"../CoreKeeperServerLog.txt",file_modified)
 fileModifiedHandler.start()
