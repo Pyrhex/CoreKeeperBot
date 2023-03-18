@@ -1,10 +1,7 @@
 import os
 import time
 import traceback
-import discord
-import os
 import requests
-from dhooks import Webhook
 from steam import Steam
 from dotenv import load_dotenv
 
@@ -50,7 +47,6 @@ def getNameFromID(id):
     return(user["player"]["personaname"])
 
 def file_modified():
-    hook = Webhook(WEBHOOK_URL)
     num_newlines = 0
     with open("../CoreKeeperServerLog.txt", 'rb') as f:
         try:
